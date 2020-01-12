@@ -1,3 +1,5 @@
+let Combinatorics = require('js-combinatorics')
+
 let sample_data = ["COMP 3008", "COMP 3007", "BUSI 2400", "COMP 3804", "COMP 3000"]
 
 var database = [
@@ -20,21 +22,21 @@ var database = [
     'course': 'COMP 3008A',
     'type': 'LEC',
     'day': ['WED', 'FRI'],
-    'time': '11:35-12:55'
+    'time': '16:35-17:55'
   },
   {
     'semester': '202010',
     'course': 'COMP 3008B',
     'type': 'LEC',
     'day': ['WED', 'FRI'],
-    'time': '11:35-12:55'
+    'time': '8:35-9:55'
   },
   {
     'semester': '202010',
     'course': 'COMP 3008C',
     'type': 'LEC',
     'day': ['WED', 'FRI'],
-    'time': '11:35-12:55'
+    'time': '8:35-9:55'
   }
   ,
   {
@@ -121,7 +123,19 @@ function gen_all_schedules(data) {
         for (comb of all_schedules) {
           if (combination_match(combination, comb)) {
             toAdd = false
-            // console.log('dont add')
+            break
+          }
+        }
+
+        //check inner time conflicts
+        subsets = Combinatorics.combination(combination, 2).toArray()
+        // console.log(subsets)
+
+        for (pair of subsets) {
+          // console.log(pair)
+          conflict = has_conflicts(pair[0], pair[1])
+          if (conflict) {
+            toAdd = false
             break
           }
         }
@@ -136,7 +150,8 @@ function gen_all_schedules(data) {
     }
     forbidden_index++
   }
-  console.log(all_schedules)
+  // console.log(all_schedules)
+
   return all_schedules
 }
 
@@ -199,13 +214,22 @@ function get_all_course_options(data) {
   return all_course_options
 }
 
-function has_conflicts(course, curr_schedule) {
-  for (crs of curr_schedule) {
-    //TODO: FIX DAY to acommodate arrays instead
-    if (crs['day'] == course['day'] && times_overlap(crs['time'], course['time']) ) {
-      //collision
-      console.log('COLLISION')
-      return true
+function has_conflicts(course1, course2) {
+
+  if (days_overlap(course1['day'], course2['day']) && times_overlap(course1['time'], course2['time']) ) {
+    //collision
+    // console.log('COLLISION')
+    return true
+  }
+  return false
+}
+
+function days_overlap(days1, days2) {
+  for (d of days1) {
+    for (dd of days2) {
+      if (d == dd) {
+        return true
+      }
     }
   }
   return false
@@ -256,5 +280,9 @@ function times_overlap(time1, time2) {
   return false
 }
 
-schedules = gen_all_schedules(sample_data)
-// console.log(schedules)
+function main() {
+  schedules = gen_all_schedules(sample_data)
+  console.log(schedules)
+}
+
+main()
