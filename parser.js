@@ -45,12 +45,17 @@ class DataProcess {
                 }
             }
         }
-        console.log(this.array)  
         //parse Data
         this.parseData()
         //covert to json
         this.JSONdata = JSON.stringify(this.Courses)
-        console.log(this.JSONdata)
+        
+        //write data to a text file
+        fs.writeFile("./frontend/src/util/courseData.txt", this.JSONdata, function(err) {
+        if (err) {
+            console.log(err);
+        }
+});
        
     
     }
