@@ -49,6 +49,7 @@ class DataProcess {
         this.parseData()
         //covert to json
         this.JSONdata = JSON.stringify(this.Courses)
+        console.log(this.JSONdata)
         
         //write data to a text file
         fs.writeFile("./frontend/src/util/courseData.txt", this.JSONdata, function(err) {
@@ -88,7 +89,9 @@ class DataProcess {
                  Course["time"] = (timeString.replace(/ /g, ''))
                 
                  //add course to the courses array
-                 this.Courses.push(Course)
+                 if (Course["type"] != 'Tutorial'){
+                    this.Courses.push(Course)
+                 }
              }
          }
     } 
