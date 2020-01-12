@@ -106,9 +106,10 @@ export default function SectionBasics() {
                         id = "submit_button"
                         onClick={submit}>Submit
                     </Button>
-                    <div>
+                    <div style={{paddingTop: 30}}>
                         <DayPilotCalendar
                             viewType= "Week"
+                            startDate= "2020-01-12"
                         />
                     </div>
                 </div>
