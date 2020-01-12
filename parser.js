@@ -13,14 +13,21 @@ function processData() {
         rows = results.data;
         }
     });
-    console.log(rows)
-    //remove all courses that are full
+
+    //loop through the excel array to remove oddities
     for(var row = 0; row < rows.length; row++){
+        console.log(rows[row])
         for(var column = 0; column < rows[row].length; column++){
             str = rows[row][column]
 
-            if(str.substring(2, 6) == "Full"){
+            //remove any classess that are full
+            if(str.includes("Full")){
                 rows.splice(row, 3)
+            }
+            
+            //remove any classes that have a tab infront of data
+            else if(str.includes("\t")){
+                rows[row][column] = str.toString().replace('\t', '')
             }
         }
     }
