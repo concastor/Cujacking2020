@@ -3,63 +3,142 @@ let sample_data = ["COMP 3008", "COMP 3007", "BUSI 2400", "COMP 3804", "COMP 300
 var database = [
   {
     'semester': '202010',
-    'course': 'COMP 3008A',
+    'course': 'COMP 3804A',
     'type': 'LEC',
     'day': ['TUE', 'THU'],
     'time': '14:35-15:55'
   },
   {
     'semester': '202010',
-    'course': 'COMP 3008B',
+    'course': 'COMP 3804B',
     'type': 'LEC',
     'day': ['MON', 'WED'],
     'time': '8:35-9:55'
   },
   {
     'semester': '202010',
-    'course': 'COMP 3000A',
+    'course': 'COMP 3008A',
     'type': 'LEC',
     'day': ['WED', 'FRI'],
     'time': '11:35-12:55'
   },
   {
     'semester': '202010',
-    'course': 'COMP 3000A1',
-    'type': 'TUT',
-    'day': ['THU'],
-    'time': '10:05-11:25'
+    'course': 'COMP 3008B',
+    'type': 'LEC',
+    'day': ['WED', 'FRI'],
+    'time': '11:35-12:55'
   },
   {
     'semester': '202010',
-    'course': 'COMP 3000A2',
-    'type': 'TUT',
-    'day': ['MON'],
-    'time': '8:35-9:55'
-  },
-  
+    'course': 'COMP 3008C',
+    'type': 'LEC',
+    'day': ['WED', 'FRI'],
+    'time': '11:35-12:55'
+  }
+  ,
+  {
+    'semester': '202010',
+    'course': 'COMP 3007A',
+    'type': 'LEC',
+    'day': ['WED', 'FRI'],
+    'time': '11:35-12:55'
+  }
 ]
 
-function get_course_options(data) {
-  course_options = []
+function gen_all_schedules(data) {
 
-  for (input_course of data) {
-    for (db_course of database) {
-      if (db_course['course'].includes(input_course)) {
-        //check if course already added
-        if (!has_conflicts(db_course, course_options)) {
-          course_options.push(db_course)
-        }
-        //check if has a tutorial
+  all_course_options = get_all_course_options(data)
+
+  //init counters array
+  counters = []
+  for (courses of all_course_options) {
+    counters.push(0)
+  }
+
+  let all_possibilities = []
+  // let testcounter = 0
+  while (!gen_complete(counters, all_course_options)) {
+
+    console.log(counters)
+
+    let possibilities = []
+    let c = 0
+    for (courses of all_course_options) {
+      possibilities.push(courses[counters[c]])
+      c++
+    }
+    console.log('--------------------------------')
+    console.log(possibilities)
+
+    //increment appropriate counter
+    let x = 0
+    for (courses of all_course_options) {
+      let course_complete = gen_complete_helper(counters[x], courses)
+      console.log(course_complete)
+      if (!course_complete) {
+        console.log(x)
+        counters[x]++
         break
       }
+
+      for (let i = 0; i <= x; i++) {
+        counters[i] = 0
+      }
+      x++
+    }
+    // if (testcounter == 3) {
+    //   break
+    // }
+    // testcounter++
+    all_possibilities.push(possibilities)
+  }
+  return all_possibilities
+}
+
+function gen_complete_helper(counter, courses) {
+  if (counter+1 == courses.length) {
+    return true
+  }
+  return false
+}
+
+function gen_complete(counters, all_course_options) {
+  console.log(counters)
+  let c = 0
+  for (courses of all_course_options) {
+    let complete = gen_complete_helper(counters[c], courses)
+    if (!complete) {
+      return false
+    }
+    c++
+  }
+  return true
+}
+
+function get_all_course_options(data) {
+
+  all_course_options = []
+
+  for (input_course of data) {
+    let course_options = []
+
+    for (db_course of database) {
+      if (db_course['course'].includes(input_course)) {
+        course_options.push(db_course)
+      }
+    }
+
+    if (course_options.length != 0) {
+      all_course_options.push(course_options)
     }
   }
-  console.log(course_options)
-  //return course_options
+  return all_course_options
 }
 
 function has_conflicts(course, curr_schedule) {
   for (crs of curr_schedule) {
+    //TODO: FIX DAY to acommodate arrays instead
     if (crs['day'] == course['day'] && times_overlap(crs['time'], course['time']) ) {
       //collision
       console.log('COLLISION')
@@ -114,4 +193,4 @@ function times_overlap(time1, time2) {
   return false
 }
 
-get_course_options(sample_data)
+gen_all_schedules(sample_data)
