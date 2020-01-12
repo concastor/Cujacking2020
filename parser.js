@@ -1,3 +1,5 @@
+/*class for data parsing and processing from 
+automated web scraper */
 class DataProcess {
 
     constructor(){
@@ -7,6 +9,7 @@ class DataProcess {
         this.JSONdata = null
     }
 
+    //processes the data and removes
     processData() {
         var Papa = require('papaparse');
         const fs = require('fs');
@@ -40,11 +43,11 @@ class DataProcess {
                 }
             }
         }  
-        console.log(this.array) 
         //parse Data
         this.parseData()
         //covert to json
         this.JSONdata = JSON.stringify(this.Courses)
+        console.log(this.JSONdata)
        
     
     }
@@ -63,13 +66,19 @@ class DataProcess {
                  
                  //find days
                  let info2 = this.array[row+1][0]
-                 let start1 = info2.indexOf("Days:") + 5
-                 let fin1 = info2.indexOf("Time") +5
-                 Course.push(info2.substring(start1, fin1))
+                 let start1 = info2.indexOf("Days:") + 6
+                 let fin1 = info2.indexOf("Time") -1
+                 let dayString = info2.substring(start1, fin1)
+                 //split days into an array
+                 Course.push(dayString.split(' '))
      
                  //find times
-                 let fin2 =  info2.indexOf("Building")
-                 Course.push(info2.substring(fin1, fin2))
+                 let fin2 =  info2.indexOf("Building") - 1
+                 let timeString = info2.substring(fin1 + 7, fin2)
+                 //remove spaces
+                 Course.push(timeString.replace(/ /g, ''))
+
+                 //add course to the courses array
                  this.Courses.push(Course)
              }
          }
