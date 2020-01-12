@@ -2,8 +2,8 @@ let Combinatorics = require('js-combinatorics')
 const fs = require('fs')
 
 
-let sample_data = ["COMP 3008", "COMP 3007", "BUSI 2400", "COMP 3804", "COMP 3000"]
-// let sample_data = ['COMP 1001']
+// let sample_data = ["COMP 3008", "COMP 3007", "COMP 3000"]
+let sample_data = ['COMP 1001', 'COMP 1005', 'COMP 2804', 'COMP 2402']
 
 let file = './courseData.txt'
 let database = JSON.parse(fs.readFileSync(file, "utf8"))
