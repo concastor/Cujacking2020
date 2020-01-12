@@ -72,7 +72,7 @@ class DataProcess {
                  //get current row
                  let info = this.array[row] 
                  Course["course"]= info[3].concat(info[4]) 
-                 Course["Type"] = info[7]
+                 Course["type"] = info[7]
                  Course["prof"] = info[10]
                  //find days
                  let info2 = this.array[row+1][0]
