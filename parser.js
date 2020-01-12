@@ -45,12 +45,18 @@ class DataProcess {
                 }
             }
         }
-        console.log(this.array)  
         //parse Data
         this.parseData()
         //covert to json
         this.JSONdata = JSON.stringify(this.Courses)
         console.log(this.JSONdata)
+        
+        //write data to a text file
+        fs.writeFile("./frontend/src/util/courseData.txt", this.JSONdata, function(err) {
+        if (err) {
+            console.log(err);
+        }
+});
        
     
     }
@@ -60,29 +66,32 @@ class DataProcess {
          //array to store the parsed courses 
          for(let row = 0; row < this.array.length; row++){
              //current course
-             let Course = []
+             let Course = {}
              //check if it is correct section to parse(or registration closed for this example)
              if (this.array[row][1] == "Open" || this.array[row][1] == "Registration Closed" ){
                  //get current row
                  let info = this.array[row] 
-                 Course.push(info[3], info[7], info[10])
-                 
+                 Course["course"]= info[3].concat(info[4]) 
+                 Course["type"] = info[7]
+                 Course["prof"] = info[10]
                  //find days
                  let info2 = this.array[row+1][0]
                  let start1 = info2.indexOf("Days:") + 6
                  let fin1 = info2.indexOf("Time") -1
                  let dayString = info2.substring(start1, fin1)
                  //split days into an array
-                 Course.push(dayString.split(' '))
+                 Course["day"] = (dayString.split(' '))
      
                  //find times
                  let fin2 =  info2.indexOf("Building") - 1
                  let timeString = info2.substring(fin1 + 7, fin2)
                  //remove spaces
-                 Course.push(timeString.replace(/ /g, ''))
-
+                 Course["time"] = (timeString.replace(/ /g, ''))
+                
                  //add course to the courses array
-                 this.Courses.push(Course)
+                 if (Course["type"] != 'Tutorial'){
+                    this.Courses.push(Course)
+                 }
              }
          }
     } 
