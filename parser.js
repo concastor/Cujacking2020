@@ -27,14 +27,16 @@ class DataProcess {
         })
 
         this.array = rows
+        console.log(this.array)
         //loop through the excel array to remove oddities
         for(var row = 0; row < this.array.length; row++){
             for(var column = 0; column < this.array[row].length; column++){
                 let str = this.array[row][column]
     
-                //remove any classess that are full
+                //remove any classess that are full or closed
                 if( str.substring(2, 6) == "Full"){
-                    this.array.splice(row, 3)
+                    console.log(str)
+                    // this.array.splice(row, 3)
                 }
                 
                 //remove any  tabs infront of data
@@ -42,7 +44,8 @@ class DataProcess {
                     this.array[row][column] = str.toString().replace('\t', '')
                 }
             }
-        }  
+        }
+        console.log(this.array)  
         //parse Data
         this.parseData()
         //covert to json
@@ -58,8 +61,8 @@ class DataProcess {
          for(let row = 0; row < this.array.length; row++){
              //current course
              let Course = []
-             //check if it is correct section to parse
-             if (this.array[row][1] == "Open"){
+             //check if it is correct section to parse(or registration closed for this example)
+             if (this.array[row][1] == "Open" || this.array[row][1] == "Registration Closed" ){
                  //get current row
                  let info = this.array[row] 
                  Course.push(info[3], info[7], info[10])
