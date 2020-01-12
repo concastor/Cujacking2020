@@ -7,6 +7,7 @@ import GridItem from "components/Grid/GridItem.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import styles from "assets/jss/material-kit-react/views/componentsSections/basicsStyle.js";
+import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "daypilot-pro-react";
 
 const useStyles = makeStyles(styles);
 
@@ -20,9 +21,6 @@ function submit() {
             courses.push(document.getElementById(textBoxes[i]).value);
         }
     }
-
-    console.log(document.getElementById("bens-working-area").innerHTML)
-    document.getElementById("bens-working-area").innerHTML = ""
 }
 
 export default function SectionBasics() {
@@ -108,6 +106,11 @@ export default function SectionBasics() {
                         id = "submit_button"
                         onClick={submit}>Submit
                     </Button>
+                    <div>
+                        <DayPilotCalendar
+                            viewType= "Week"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
