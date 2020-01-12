@@ -58,18 +58,18 @@ function get_combinations(comparison_course, courses_toSearch) {
 
   counters = init_counter_arr(courses_toSearch)
 
-  let combinations = []
+  let all_combinations = []
   let testcounter = 0
   while (!gen_complete(counters, courses_toSearch)) {
 
-    // console.log(counters)
-
     //add current combination to the array
     let c = 0
+    let combination = [comparison_course]
     for (courses of courses_toSearch) {
-      combinations.push(courses[counters[c]])
+      combination.push(courses[counters[c]])
       c++
     }
+    // console.log(combination)
 
     //increment appropriate counter
     let x = 0
@@ -82,6 +82,8 @@ function get_combinations(comparison_course, courses_toSearch) {
       }
       x++
     }
+    // console.log(combination)
+    all_combinations.push(combination)
 
     // if (testcounter == 5) {
     //   break
@@ -89,7 +91,7 @@ function get_combinations(comparison_course, courses_toSearch) {
     // testcounter++
 
   }
-  return combinations
+  return all_combinations
 }
 
 function gen_all_schedules(data) {
@@ -112,14 +114,49 @@ function gen_all_schedules(data) {
 
       //get all combinations
       course_combinations = get_combinations(course, courses_toSearch)
-      // console.log(course_combinations)
-      all_schedules.push(course_combinations)
+
+      //check if not duplicate
+      for (combination of course_combinations) {
+        let toAdd = true
+        for (comb of all_schedules) {
+          if (combination_match(combination, comb)) {
+            toAdd = false
+            // console.log('dont add')
+            break
+          }
+        }
+
+        // console.log(toAdd)
+        //if not duplicate, add
+        if (toAdd) {
+          all_schedules.push(combination)
+        }
+      }
 
     }
     forbidden_index++
   }
-
+  console.log(all_schedules)
   return all_schedules
+}
+
+function combination_match(comb1, comb2) {
+  let count = 0
+
+  for (let i = 0; i < comb1.length; i++) {
+    for (let j = 0; j < comb2.length; j++) {
+      if (comb1[i].course == comb2[j].course) {
+        count++
+        break
+      }
+    }
+  }
+
+  if (count == comb1.length) {
+    return true
+  }
+  return false
+
 }
 
 function gen_complete_helper(counter, courses) {
