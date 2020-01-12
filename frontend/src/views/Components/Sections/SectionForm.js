@@ -11,13 +11,24 @@ import styles from "assets/jss/material-kit-react/views/componentsSections/basic
 const useStyles = makeStyles(styles);
 
 function submit() {
-    console.log(document.getElementById("course1").value);
+    var textBoxes = ["course1","course2","course3","course4","course5","course6"];
+    var courses = []
+    var i;
+
+    for (i = 0; i < textBoxes.length; i++) {
+        if (!document.getElementById(textBoxes[i]).value === false){
+            courses.push(document.getElementById(textBoxes[i]).value);
+        }
+    }
+
+    console.log(document.getElementById("bens-working-area").innerHTML)
+    document.getElementById("bens-working-area").innerHTML = ""
 }
 
 export default function SectionBasics() {
     const classes = useStyles();
     return (
-        <div className={classes.sections}>
+        <div className={classes.sections} id = "bens-working-area">
             <div className={classes.container}>
                 <div className={classes.title}>
                     <h2>Course Input</h2>
