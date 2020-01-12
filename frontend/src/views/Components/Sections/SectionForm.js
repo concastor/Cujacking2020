@@ -25,6 +25,24 @@ function submit() {
 
 export default function SectionBasics() {
     const classes = useStyles();
+    var {...config} = {
+        viewType: "Week",
+        startDate: "2019-09-15",
+        events: [
+            {
+                id: 1,
+                text: "Event 1",
+                start: "2019-09-16T10:30:00",
+                end: "2019-09-16T13:00:00"
+            },
+            {
+                id: 2,
+                text: "Event 2",
+                start: "2019-09-17T12:00:00",
+                end: "2019-09-17T14:00:00",
+            }
+        ]
+    }
     return (
         <div className={classes.sections} id = "bens-working-area">
             <div className={classes.container}>
@@ -108,8 +126,7 @@ export default function SectionBasics() {
                     </Button>
                     <div style={{paddingTop: 30}}>
                         <DayPilotCalendar
-                            viewType= "Week"
-                            startDate= "2020-01-12"
+                            {...config}
                         />
                     </div>
                 </div>
