@@ -46,54 +46,80 @@ var database = [
   }
 ]
 
+function init_counter_arr(courses) {
+  counters = []
+  for (course of courses) {
+    counters.push(0)
+  }
+  return counters
+}
+
+function get_combinations(comparison_course, courses_toSearch) {
+
+  counters = init_counter_arr(courses_toSearch)
+
+  let combinations = []
+  let testcounter = 0
+  while (!gen_complete(counters, courses_toSearch)) {
+
+    // console.log(counters)
+
+    //add current combination to the array
+    let c = 0
+    for (courses of courses_toSearch) {
+      combinations.push(courses[counters[c]])
+      c++
+    }
+
+    //increment appropriate counter
+    let x = 0
+    for (courses of courses_toSearch) {
+      let course_complete = gen_complete_helper(counters[x], courses)
+      // console.log(course_complete)
+      if (!course_complete) {
+        counters[x]++
+        break
+      }
+      x++
+    }
+
+    // if (testcounter == 5) {
+    //   break
+    // }
+    // testcounter++
+
+  }
+  return combinations
+}
+
 function gen_all_schedules(data) {
 
   all_course_options = get_all_course_options(data)
 
-  //init counters array
-  counters = []
+  all_schedules = []
+  let forbidden_index = 0
   for (courses of all_course_options) {
-    counters.push(0)
+
+    //deep copy
+    courses_toSearch = JSON.parse(JSON.stringify(all_course_options))
+
+    //don't search other sections of same course for combinations
+    courses_toSearch.splice(forbidden_index, 1)
+
+    for (course of courses) {
+
+      // console.log(course)
+
+      //get all combinations
+      course_combinations = get_combinations(course, courses_toSearch)
+      // console.log(course_combinations)
+      all_schedules.push(course_combinations)
+
+    }
+    forbidden_index++
   }
 
-  let all_possibilities = []
-  // let testcounter = 0
-  while (!gen_complete(counters, all_course_options)) {
-
-    console.log(counters)
-
-    let possibilities = []
-    let c = 0
-    for (courses of all_course_options) {
-      possibilities.push(courses[counters[c]])
-      c++
-    }
-    console.log('--------------------------------')
-    console.log(possibilities)
-
-    //increment appropriate counter
-    let x = 0
-    for (courses of all_course_options) {
-      let course_complete = gen_complete_helper(counters[x], courses)
-      console.log(course_complete)
-      if (!course_complete) {
-        console.log(x)
-        counters[x]++
-        break
-      }
-
-      for (let i = 0; i <= x; i++) {
-        counters[i] = 0
-      }
-      x++
-    }
-    // if (testcounter == 3) {
-    //   break
-    // }
-    // testcounter++
-    all_possibilities.push(possibilities)
-  }
-  return all_possibilities
+  return all_schedules
 }
 
 function gen_complete_helper(counter, courses) {
@@ -104,7 +130,7 @@ function gen_complete_helper(counter, courses) {
 }
 
 function gen_complete(counters, all_course_options) {
-  console.log(counters)
+  // console.log(counters)
   let c = 0
   for (courses of all_course_options) {
     let complete = gen_complete_helper(counters[c], courses)
@@ -193,4 +219,5 @@ function times_overlap(time1, time2) {
   return false
 }
 
-gen_all_schedules(sample_data)
+schedules = gen_all_schedules(sample_data)
+// console.log(schedules)
