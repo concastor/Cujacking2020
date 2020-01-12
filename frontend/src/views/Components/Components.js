@@ -44,7 +44,7 @@ export default function Components(props) {
               <div className={classes.brand}>
                 <h1 className={classes.title}>Schedule Generator</h1>
                 <h3 className={classes.subtitle}>
-                  We will make a better schedule than you.
+                  We <strike>will</strike> might make a better schedule than you.
                 </h3>
               </div>
             </GridItem>
