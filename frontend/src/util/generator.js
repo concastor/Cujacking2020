@@ -1,7 +1,14 @@
 let Combinatorics = require('js-combinatorics')
+const fs = require('fs')
+
 
 let sample_data = ["COMP 3008", "COMP 3007", "BUSI 2400", "COMP 3804", "COMP 3000"]
+// let sample_data = ['COMP 1001']
 
+let file = './courseData.txt'
+let database = JSON.parse(fs.readFileSync(file, "utf8"))
+
+/*
 var database = [
   {
     'semester': '202010',
@@ -47,6 +54,7 @@ var database = [
     'time': '11:35-12:55'
   }
 ]
+*/
 
 function init_counter_arr(courses) {
   counters = []
