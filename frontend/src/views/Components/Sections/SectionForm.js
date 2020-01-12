@@ -10,6 +10,24 @@ import styles from "assets/jss/material-kit-react/views/componentsSections/basic
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "daypilot-pro-react";
 
 const useStyles = makeStyles(styles);
+var display = {
+    viewType: "Week",
+    startDate: "2019-09-15",
+    events: [
+        {
+            id: 1,
+            text: "Event 1",
+            start: "2019-09-16T10:30:00",
+            end: "2019-09-16T13:00:00"
+        },
+        {
+            id: 2,
+            text: "Event 2",
+            start: "2019-09-17T12:00:00",
+            end: "2019-09-17T14:00:00",
+        }
+    ]
+}
 
 function submit() {
     var textBoxes = ["course1","course2","course3","course4","course5","course6"];
@@ -25,24 +43,7 @@ function submit() {
 
 export default function SectionBasics() {
     const classes = useStyles();
-    var {...config} = {
-        viewType: "Week",
-        startDate: "2019-09-15",
-        events: [
-            {
-                id: 1,
-                text: "Event 1",
-                start: "2019-09-16T10:30:00",
-                end: "2019-09-16T13:00:00"
-            },
-            {
-                id: 2,
-                text: "Event 2",
-                start: "2019-09-17T12:00:00",
-                end: "2019-09-17T14:00:00",
-            }
-        ]
-    }
+    var {...config} = display;
     return (
         <div className={classes.sections} id = "bens-working-area">
             <div className={classes.container}>
