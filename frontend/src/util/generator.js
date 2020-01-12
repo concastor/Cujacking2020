@@ -36,6 +36,7 @@ var database = [
     'day': ['MON'],
     'time': '8:35-9:55'
   },
+  
 ]
 
 function get_course_options(data) {
@@ -45,7 +46,11 @@ function get_course_options(data) {
     for (db_course of database) {
       if (db_course['course'].includes(input_course)) {
         //check if course already added
-        course_options.push(db_course)
+        if (!has_conflicts(db_course, course_options)) {
+          course_options.push(db_course)
+        }
+        //check if has a tutorial
+        break
       }
     }
   }
@@ -53,12 +58,15 @@ function get_course_options(data) {
   //return course_options
 }
 
-function check_availability(course, curr_schedule) {
+function has_conflicts(course, curr_schedule) {
   for (crs of curr_schedule) {
     if (crs['day'] == course['day'] && times_overlap(crs['time'], course['time']) ) {
       //collision
+      console.log('COLLISION')
+      return true
     }
   }
+  return false
 }
 
 function times_overlap(time1, time2) {
@@ -88,25 +96,22 @@ function times_overlap(time1, time2) {
   //now, check for overlap
   //if end of time1 is greater than start of time2, there is an overlap
 
-  earliest_endhour = earliest_time.split('-')[1].split(':')[0]
-  latest_starthour = latest_time.split('-')[0].split(':')[0]
+  earliest_endhour = parseInt(earliest_time.split('-')[1].split(':')[0])
+  latest_starthour = parseInt(latest_time.split('-')[0].split(':')[0])
 
   if (earliest_endhour > latest_starthour) {
     return true
-  } else if (earliest_endhour == latest_starthour) {
+  }
+  else if (earliest_endhour == latest_starthour) {
     //check minutes
-    earliest_endmin = earliest_time.split('-')[1].split(':')[1]
-    latest_startmin = latest_time.split('-')[0].split(':')[1]
+    earliest_endmin = parseInt(earliest_time.split('-')[1].split(':')[1])
+    latest_startmin = parseInt(latest_time.split('-')[0].split(':')[1])
 
     if (earliest_endmin > latest_startmin) {
       return true
     }
   }
-
   return false
-
 }
 
-console.log(times_overlap('8:35-9:55', '10:05-11:55'))
-
-//get_course_options(sample_data)
+get_course_options(sample_data)
