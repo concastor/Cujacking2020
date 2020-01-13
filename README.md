@@ -21,7 +21,7 @@ updated when it's fully functional
 
 Contrubuters
 -----------
-- Jake Richardsno (web scraper, data collection and parsing)
+- Jake Richardson (web scraper, data collection and parsing)
 - Ben Vandenberg (frontend development, Ui design)
 - Alexei Krumshyn (backend development, schedule generation algorithm)
 
