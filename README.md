@@ -14,7 +14,7 @@ Technologies used
 - JavaScript
 
 
-Running
+Execution
 -------
 
 updated when it's fully functional
