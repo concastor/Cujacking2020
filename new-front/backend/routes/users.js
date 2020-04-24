@@ -20,6 +20,7 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// get user specific details
 router.route('/:username').get((req, res) => {
     User.findById(req.params.username)
         // User.find({username: req.params.username})
