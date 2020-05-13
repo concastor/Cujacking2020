@@ -37,3 +37,4 @@ backend/.idea
 **/*.njsproj
 **/*.sln
 **/*.sw?
+website/main.code-workspace
