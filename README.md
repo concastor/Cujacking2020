@@ -8,7 +8,7 @@ This program was a challenge and learning experience. almost every technology we
 
 Technologies used
 -----------------
-- React.js
+- VueJS
 - Ui path automation
 - Node.js
 - JavaScript
